@@ -5,47 +5,163 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#17121f">
 <meta name="color-scheme" content="dark">
-<title>Для тебя💕</title>
+<title>Письма для тебя 💕</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap');
-:root{color-scheme: dark}
-:root{--bg:#17121f;--rose:#d9a7b4;--cream:#f7eee8;--muted:#b9aab7;--line:rgba(255,231,238,.17)}
+
+:root{color-scheme:dark;--bg:#17121f;--rose:#d9a7b4;--cream:#f7eee8;--muted:#b9aab7;--line:rgba(255,231,238,.17)}
 *{box-sizing:border-box} html{min-height:100%;background:var(--bg)}
 body{margin:0;min-height:100vh;color:var(--cream);font-family:Manrope, sans-serif;background:radial-gradient(ellipse at 50% 15%,#493044 0%,#251b2d 38%,#17121f 78%);overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(#fff 0.65px,transparent .65px);background-size:34px 34px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
-.center{min-height:100vh;display:grid;place-items:center;padding:28px 18px;position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(#fff 0.65px,transparent .65px);background-size:34px 34px;-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);mask-image:linear-gradient(to bottom,black,transparent 85%)}
+
+.center{min-height:100vh;display:grid;place-items:center;padding:34px 18px;position:relative}
 .screen{width:min(100%,760px);text-align:center;position:relative;z-index:1}
+.screen.collection{width:min(100%,940px)}
+.screen.appear{animation:appear .85s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+
 .eyebrow{font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--rose);margin-bottom:22px}
 h1,h2,.serif{font-family:"Cormorant Garamond",serif;font-weight:400}
 h1{font-size:clamp(42px,8vw,76px);line-height:.98;margin:0 0 18px}
 .intro{color:var(--muted);font-size:13px;letter-spacing:.06em;line-height:1.8}
+
+/* ================= КОЛЛЕКЦИЯ ================= */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr));gap:14px;margin:44px 0 0}
+.card{
+  position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  padding:20px 18px 16px;border:1px solid var(--line);border-radius:16px;
+  background:linear-gradient(145deg,#ffffff0a,#ffffff03);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  font:inherit;color:inherit;text-align:left;cursor:pointer;
+  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease,background .35s ease;
+}
+.card:not(.locked):hover{transform:translateY(-6px);border-color:rgba(255,231,238,.34);box-shadow:0 20px 44px #08060b77;background:linear-gradient(145deg,#ffffff12,#ffffff05)}
+.card:not(.locked):hover .card-arrow{transform:translateX(5px)}
+.card:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%}
+.card-num{font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;color:#9b8b99}
+.pill{font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid rgba(217,167,180,.45);color:var(--rose);white-space:nowrap}
+.pill.locked{border-color:rgba(185,170,183,.22);color:#8a7a88}
+.mini{position:relative;width:62px;height:46px;border-radius:5px;flex:none;margin:4px 0 2px;background:linear-gradient(145deg,#d8a9b5,#a96f84);box-shadow:0 10px 22px #08060b66}
+.mini:before{content:"";position:absolute;inset:0;border-radius:5px;background:linear-gradient(32deg,transparent 49.5%,#edc4cc 50%,transparent 50.7%),linear-gradient(-32deg,transparent 49.5%,#e8bac5 50%,transparent 50.7%)}
+.mini-flap{position:absolute;top:0;left:0;width:0;height:0;border-left:31px solid transparent;border-right:31px solid transparent;border-top:24px solid #edc5ce;transform-origin:top;transition:transform .55s ease;z-index:1}
+.mini-seal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:21px;height:21px;border-radius:50%;background:#8d4e68;display:grid;place-items:center;color:#fbe9e8;font-size:11px;box-shadow:0 2px 8px #53283c55;transition:opacity .25s}
+.card.opening .mini-flap{transform:rotateX(180deg)}
+.card.opening .mini-seal{opacity:0}
+.card-title{font-family:"Cormorant Garamond",serif;font-size:23px;line-height:1.15;color:#fff0ef}
+.card-hint{font-size:11.5px;line-height:1.7;color:#a999a8}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:auto;padding-top:13px;border-top:1px solid var(--line);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#897888}
+.card-arrow{color:var(--rose);font-size:13px;transition:transform .35s ease}
+.card.locked{cursor:default}
+.card.locked .card-num{color:#7d6d7c}
+.card.locked .mini{background:linear-gradient(145deg,#5d4a56,#40333e);box-shadow:none}
+.card.locked .mini:before{background:linear-gradient(32deg,transparent 49.5%,#6f5a68 50%,transparent 50.7%),linear-gradient(-32deg,transparent 49.5%,#6b5664 50%,transparent 50.7%)}
+.card.locked .mini-flap{border-top-color:#6f5a68}
+.card.locked .mini-seal{background:#4a3540;color:#bb9dab;box-shadow:none}
+.card.locked .card-title{color:#c9b9c6}
+.card.locked .card-hint{color:#8d7d8b}
+.card.locked.shake{animation:shake .45s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}18%{transform:translateX(-5px)}38%{transform:translateX(5px)}58%{transform:translateX(-3px)}78%{transform:translateX(3px)}}
+.collection-foot{margin-top:38px;color:#897888;font-size:10px;letter-spacing:.18em;line-height:2.2}
+.collection-foot .count{display:block;color:#a999a8;letter-spacing:.14em}
+
+/* ================= ЭКРАН С КОНВЕРТОМ ================= */
 .envelope-wrap{margin:44px auto 0;width:190px;height:142px;position:relative;cursor:pointer;filter:drop-shadow(0 18px 35px #08060b88);transition:transform .35s}
 .envelope-wrap:hover{transform:translateY(-6px) rotate(-1deg)}
 .envelope{position:absolute;inset:20px 0 0;background:linear-gradient(145deg,#d8a9b5,#a96f84);border-radius:4px 4px 10px 10px;overflow:hidden}
 .envelope:before{content:"";position:absolute;inset:0;background:linear-gradient(32deg,transparent 49.5%,#edc4cc 50%,transparent 50.7%),linear-gradient(-32deg,transparent 49.5%,#e8bac5 50%,transparent 50.7%)}
 .flap{position:absolute;top:20px;left:0;width:0;height:0;border-left:95px solid transparent;border-right:95px solid transparent;border-top:75px solid #edc5ce;transform-origin:top;z-index:2;transition:transform .65s ease}
-.seal{position:absolute;z-index:3;left:50%;top:75px;transform:translate(-50%,-50%);width:35px;height:35px;border-radius:50%;background:#8d4e68;display:grid;place-items:center;color:#fbe9e8;font-size:17px;box-shadow:0 3px 12px #53283c55}
+.seal{position:absolute;z-index:3;left:50%;top:75px;transform:translate(-50%,-50%);width:35px;height:35px;border-radius:50%;background:#8d4e68;display:grid;place-items:center;color:#fbe9e8;font-size:17px;box-shadow:0 3px 12px #53283c55;transition:opacity .2s}
 .tap{margin-top:18px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#e5c4cd}
-.opening .flap{transform:rotateX(180deg)}.opening .seal{opacity:0;transition:opacity .2s}
-.hidden{display:none!important}
-#letter{animation:appear .9s ease both}
-@keyframes appear{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.opening .flap{transform:rotateX(180deg)}
+.opening .seal{opacity:0}
+
+/* ================= ПИСЬМО ================= */
 .heart{font-size:23px;color:var(--rose);margin:0 0 16px}
 .message{max-width:590px;margin:0 auto 42px;color:#eadde0;font-family:"Cormorant Garamond",serif;font-size:clamp(22px,4vw,30px);line-height:1.45;white-space:pre-line}
 .counter-label{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--rose);margin-bottom:20px}
 .counter{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:570px;margin:0 auto}
-.unit{padding:20px 8px 17px;border:1px solid var(--line);background:linear-gradient(145deg,#ffffff0a,#ffffff03);border-radius:12px;backdrop-filter:blur(8px)}
+.unit{padding:20px 8px 17px;border:1px solid var(--line);background:linear-gradient(145deg,#ffffff0a,#ffffff03);border-radius:12px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .num{font-family:"Cormorant Garamond",serif;font-size:clamp(35px,7vw,55px);line-height:1;color:#fff0ef;font-variant-numeric:tabular-nums}
 .unit small{display:block;margin-top:9px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .since{margin-top:26px;color:#a999a8;font-size:11px;letter-spacing:.12em}
 .footer{margin-top:52px;color:#897888;font-size:10px;letter-spacing:.18em}
-.back{margin-top:30px;background:none;border:0;color:#bca5b1;font:inherit;font-size:11px;letter-spacing:.14em;cursor:pointer;border-bottom:1px solid #806879;padding:7px}
-@media(max-width:520px){.counter{gap:6px}.unit{padding:17px 3px}.num{font-size:36px}.unit small{font-size:8px;letter-spacing:.12em}.message{margin-bottom:32px}}
+.back{margin-top:30px;background:none;border:0;color:#bca5b1;font:inherit;font-size:11px;letter-spacing:.14em;cursor:pointer;border-bottom:1px solid #806879;padding:7px 2px;transition:color .3s,border-color .3s}
+.back:hover{color:#f0dbe2;border-color:#c79cae}
+.back.small{font-size:10px;letter-spacing:.12em;opacity:.8;margin-top:26px}
+
+/* тост */
+.toast{position:fixed;left:50%;bottom:32px;z-index:9;transform:translate(-50%,18px);opacity:0;pointer-events:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line);background:#241a2ce6;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e5d3da;font-size:11.5px;letter-spacing:.08em;text-align:center;max-width:calc(100% - 36px);box-shadow:0 14px 34px #08060b88;transition:opacity .35s ease,transform .35s ease}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:520px){
+  .grid{grid-template-columns:1fr;gap:10px;margin-top:34px}
+  .counter{gap:6px}.unit{padding:17px 3px}.num{font-size:36px}
+  .unit small{font-size:8px;letter-spacing:.12em}.message{margin-bottom:32px}
+}
 </style>
 </head>
 <body>
+
 <main class="center">
-  <section class="screen" id="welcome">
+
+  <!-- ================= 1. КОЛЛЕКЦИЯ ПИСЕМ ================= -->
+  <section class="screen collection" id="collection">
+    <div class="eyebrow">коллекция писем</div>
+    <h1>Письма<br>для тебя</h1>
+    <p class="intro">Каждое письмо — это момент, который я хочу сохранить.
+      Пока открыто одно, но это только начало.</p>
+
+    <div class="grid">
+
+      <!-- письмо №1 — открытое -->
+      <button class="card" id="openFirst" aria-label="Открыть первое письмо">
+        <span class="card-top">
+          <span class="card-num">письмо № 01</span>
+          <span class="pill">открыто</span>
+        </span>
+        <span class="mini"><span class="mini-flap"></span><span class="mini-seal">♡</span></span>
+        <span class="card-title">Тот самый день</span>
+        <span class="card-hint">С него всё началось — и я до сих пор улыбаюсь, вспоминая.</span>
+        <span class="card-foot"><span>17 октября 2026</span><span class="card-arrow">→</span></span>
+      </button>
+
+      <!-- запечатанные письма -->
+      <button class="card locked" aria-disabled="true">
+        <span class="card-top"><span class="card-num">письмо № 02</span><span class="pill locked">запечатано</span></span>
+        <span class="mini"><span class="mini-flap"></span><span class="mini-seal">✧</span></span>
+        <span class="card-title">Следующее письмо</span>
+        <span class="card-hint">Уже пишется. Откроется, когда придёт время.</span>
+        <span class="card-foot"><span>скоро</span><span class="card-arrow">✧</span></span>
+      </button>
+
+      <button class="card locked" aria-disabled="true">
+        <span class="card-top"><span class="card-num">письмо № 03</span><span class="pill locked">запечатано</span></span>
+        <span class="mini"><span class="mini-flap"></span><span class="mini-seal">✧</span></span>
+        <span class="card-title">О чём я молчу</span>
+        <span class="card-hint">Слова, которые я всё никак не скажу вслух.</span>
+        <span class="card-foot"><span>скоро</span><span class="card-arrow">✧</span></span>
+      </button>
+
+      <button class="card locked" aria-disabled="true">
+        <span class="card-top"><span class="card-num">письмо № 04</span><span class="pill locked">запечатано</span></span>
+        <span class="mini"><span class="mini-flap"></span><span class="mini-seal">✧</span></span>
+        <span class="card-title">Про нас</span>
+        <span class="card-hint">Немного о прошлом.</span>
+        <span class="card-foot"><span>позже</span><span class="card-arrow">✧</span></span>
+      </button>
+
+    </div>
+
+    <div class="collection-foot">
+      <span class="count">открыто только одно😊</span>
+      С КАЖДЫМ ДНЁМ — ЧУТЬ БОЛЬШЕ ♡
+    </div>
+  </section>
+
+  <!-- ================= 2. ЭКРАН С КОНВЕРТОМ (как было) ================= -->
+  <section class="screen hidden" id="welcome">
     <div class="eyebrow">первое письмо для тебя</div>
     <h1>Я хочу кое-что<br>сказать тебе</h1>
     <div class="intro">Открой, когда будешь готова 💖</div>
@@ -53,12 +169,13 @@ h1{font-size:clamp(42px,8vw,76px);line-height:.98;margin:0 0 18px}
       <div class="envelope"></div><div class="flap"></div><div class="seal">♡</div>
     </div>
     <div class="tap">нажми на конверт</div>
+    <button class="back small" id="backToCollection">← к коллекции писем</button>
   </section>
 
+  <!-- ================= 3. САМО ПИСЬМО ================= -->
   <section class="screen hidden" id="letter">
     <div class="heart">♾️✦ &nbsp; ❣️ &nbsp; ✦♾️</div>
     <div class="eyebrow">для самого дорогого человека</div>
-    <!--<h3>И это только начало</h3>-->
     <p class="message" id="personalMessage"></p>
     <h3>Я люблю тебя<br>💕💓💕</h3>
     <div class="counter-label">мы вместе уже</div>
@@ -70,43 +187,113 @@ h1{font-size:clamp(42px,8vw,76px);line-height:.98;margin:0 0 18px}
     </div>
     <div class="since" id="sinceText"></div>
     <div class="footer">С КАЖДЫМ ДНЁМ — ЧУТЬ БОЛЬШЕ ♡</div>
-    <button class="back" id="back">вернуться к конверту</button>
+    <button class="back" id="back">← вернуться к конверту</button>
   </section>
-</main>
-<script>
 
-//-------------opt
+</main>
+
+<div class="toast" id="toast">Это письмо ещё запечатано 💌</div>
+
+<script>
+//😇🥰😊☺️🤗😭😞❤️💕💓❣️💗🩷💖♾️❤️‍🩹💘❤️‍🔥👉👈
+//============================== настройки письма №1 ==============================
 const START_DATE = "2026-10-17T18:00:00";
 const PERSONAL_MESSAGE = "Люблю тебя больше всего на свете:\nбезгранично, неимоверно сильно\n💗🩷💗\nЭту дату я запомню на всю жизнь, хотя дело, конечно, не в дате, а в том, что произошло.\nЯ еще не раз расскажу тебе об этом, но сейчас скажу кратко: это был изумительный день, никогда я ещё не был так уверен в чём-то, как тогда. И я так рад, что всё получилось🥰\nЯ сказал, что не жалею о поступлении в лицей, единственная причина — это ты✨\nЯ ни о чём не жалею — каждая ошибка, каждое препятствие в моей жизни вело меня к тебе🤗";
-
-//😇🥰😊☺️🤗😭😞❤️💕💓❣️💗🩷💖♾️❤️‍🩹💘❤️‍🔥👉👈
+//===============================================================================
+//Я обожаю тебя, ты самый луший человек, которого я встречал за всю свою жизнь. Если читеаешь это, помни, я очень сильно тебя люблю, я хочу доверить тебе всю свою жизнь)
 document.getElementById("personalMessage").textContent = PERSONAL_MESSAGE;
+
 const start = new Date(START_DATE);
 document.getElementById("sinceText").textContent =
   "с " + start.toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
+
 function updateCounter(){
   let diff = Math.max(0, Date.now() - start.getTime());
   const days = Math.floor(diff / 86400000); diff %= 86400000;
   const hours = Math.floor(diff / 3600000); diff %= 3600000;
   const minutes = Math.floor(diff / 60000);
   const seconds = Math.floor((Date.now() - start.getTime()) / 1000) % 60;
-  document.getElementById("days").textContent = String(days).padStart(3,"0");
-  document.getElementById("hours").textContent = String(hours).padStart(2,"0");
+  document.getElementById("days").textContent    = String(days).padStart(3,"0");
+  document.getElementById("hours").textContent   = String(hours).padStart(2,"0");
   document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
   document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
 }
-updateCounter(); setInterval(updateCounter,1000);
-const envelope = document.getElementById("openLetter");
-function openLetter(){
-  envelope.classList.add("opening");
-  setTimeout(()=>{document.getElementById("welcome").classList.add("hidden");document.getElementById("letter").classList.remove("hidden");},450);
+updateCounter();
+setInterval(updateCounter, 1000);
+
+/* -------------------- переключение экранов -------------------- */
+const screens = {
+  collection: document.getElementById("collection"),
+  welcome:    document.getElementById("welcome"),
+  letter:     document.getElementById("letter")
+};
+
+function showScreen(name){
+  Object.values(screens).forEach(s => s.classList.add("hidden"));
+  const el = screens[name];
+  el.classList.remove("hidden");
+  el.classList.remove("appear");
+  void el.offsetWidth;          // перезапуск анимации появления
+  el.classList.add("appear");
+  window.scrollTo({top:0, left:0, behavior:"instant" in window ? "instant" : "auto"});
 }
-envelope.addEventListener("click",openLetter);
-envelope.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLetter();}});
-document.getElementById("back").addEventListener("click",()=>{
-  document.getElementById("letter").classList.add("hidden");
-  document.getElementById("welcome").classList.remove("hidden");
+
+function replay(el, cls){
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+}
+
+/* -------------------- тост -------------------- */
+const toast = document.getElementById("toast");
+let toastTimer;
+function showToast(text){
+  toast.textContent = text;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+/* -------------------- коллекция → конверт -------------------- */
+const firstCard = document.getElementById("openFirst");
+
+document.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", () => {
+    if (card.classList.contains("locked")) {
+      replay(card, "shake");
+      showToast("Это письмо ещё запечатано 💌");
+      return;
+    }
+    card.classList.add("opening");
+    setTimeout(() => {
+      card.classList.remove("opening");
+      showScreen("welcome");
+    }, 430);
+  });
+});
+
+/* -------------------- конверт → письмо -------------------- */
+const envelope = document.getElementById("openLetter");
+
+function openEnvelope(){
+  if (envelope.classList.contains("opening")) return;
+  envelope.classList.add("opening");
+  setTimeout(() => {
+    showScreen("letter");
+    envelope.classList.remove("opening");   // сброс, чтобы в следующий раз открывался заново
+  }, 450);
+}
+
+envelope.addEventListener("click", openEnvelope);
+envelope.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openEnvelope(); }
+});
+
+/* -------------------- назад -------------------- */
+document.getElementById("back").addEventListener("click", () => showScreen("welcome"));
+document.getElementById("backToCollection").addEventListener("click", () => {
   envelope.classList.remove("opening");
+  showScreen("collection");
 });
 </script>
 </body>
